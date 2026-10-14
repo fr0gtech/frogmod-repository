@@ -1,0 +1,15 @@
+{
+  "format": 1,
+  "name": "My Deadlock Mods",
+  "description": "Replace this with one line about your mods",
+  "homepage": "https://github.com/YOUR-NAME/YOUR-REPO",
+  "mods": [
+    {
+      "id": "example_hud",
+      "name": "Example HUD",
+      "description": "Replace with one line on what it does.",
+      "tags": ["HUD"],
+      "notes": ["First release"]
+    }
+  ]
+}

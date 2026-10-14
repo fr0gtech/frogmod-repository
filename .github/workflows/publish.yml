@@ -1,0 +1,42 @@
+# Builds repo.json from mods.json and your releases, and publishes it with GitHub Pages:
+# https://<owner>.github.io/<repo>/repo.json is the address players add in Frogtech Mod Loader.
+name: Publish repository
+on:
+  release:
+    types: [published, edited]
+  push:
+    branches: [main]
+    paths: [mods.json]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages
+  cancel-in-progress: true
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}repo.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build repo.json
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/build_repo.py
+      - name: Check it against the schema
+        run: |
+          pip install --quiet jsonschema==4.23.0
+          python3 -c "import json,jsonschema; jsonschema.validate(json.load(open('site/repo.json')), json.load(open('schema/repository.schema.json'))); print('valid')"
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

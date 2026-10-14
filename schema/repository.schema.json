@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://mods.frogtech.dev/schema/repository-1.json",
+  "title": "Frogtech Mod Loader repository",
+  "type": "object",
+  "required": ["format", "name", "mods"],
+  "properties": {
+    "format": { "const": 1 },
+    "name": { "type": "string", "minLength": 1, "maxLength": 80 },
+    "description": { "type": "string", "maxLength": 300 },
+    "homepage": { "type": "string", "pattern": "^https://" },
+    "icon": { "type": "string", "pattern": "^https://" },
+    "mods": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["id", "name", "version", "url", "sha256"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^[a-z0-9_-]{1,64}$" },
+          "name": { "type": "string", "minLength": 1, "maxLength": 100 },
+          "version": { "type": "string", "pattern": "^[0-9]+(\\.[0-9]+)*$" },
+          "url": { "type": "string", "pattern": "^https://" },
+          "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+          "size": { "type": "integer", "minimum": 0 },
+          "description": { "type": "string", "maxLength": 300 },
+          "image": { "type": "string", "pattern": "^https://" },
+          "tags": { "type": "array", "items": { "type": "string", "maxLength": 32 }, "maxItems": 8 },
+          "page": { "type": "string", "pattern": "^https://" },
+          "conflicts": { "type": "array", "items": { "type": "string", "pattern": "^[a-z0-9_-]{1,64}$" } },
+          "game": { "type": "string" },
+          "notes": { "type": "array", "items": { "type": "string", "maxLength": 300 } }
+        }
+      }
+    }
+  }
+}
